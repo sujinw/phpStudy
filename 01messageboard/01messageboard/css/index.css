@@ -1,0 +1,7 @@
+/* 介绍 */
+.introduce{margin:240px 84px 0;padding:10px;overflow:hidden;}
+/* 关于我 */
+.about{width:336px;line-height:20px;margin-left:64px;float:left;overflow:hidden;}
+/* 联系我 */
+.contact{width:336px;float:right;overflow:hidden;}
+.contact p{margin-bottom:20px;}

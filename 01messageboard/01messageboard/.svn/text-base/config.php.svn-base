@@ -1,0 +1,8 @@
+<?php 
+$_config = [];
+$_config['db']['dbhost'] 	= 'localhost';
+$_config['db']['dbuser'] 	= 'root';
+$_config['db']['dbpwd']  	= '040310hD,';
+$_config['db']['dbname'] 	= 'messageboard';
+$_config['db']['dbcharset'] = 'utf8';
+?>

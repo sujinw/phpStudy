@@ -1,0 +1,31 @@
+/* 留言列表 */
+.comment_list{margin:240px 84px 0;}
+/* 留言列表为空时 */
+.comment_empty{text-align:center;padding:20px 0;border:1px solid #dcdcdc;}
+/* 一条留言 */
+.comment_list .comment_row{border:1px solid #ccc;*zoom:1;margin-bottom:10px;}
+.comment_list .comment_row:before,.comment_list .comment_row:after{content:'';display:table;}
+.comment_list .comment_row:after{clear:both;}
+/* 留言左侧 */
+.comment_list .comment_row .comment_left{width:110px;float:left;padding:10px;}
+.comment_list .comment_row .comment_left .comment_portrait{display:block;margin:0 auto;border:2px solid #dcdcdc;}
+.comment_list .comment_row .comment_left .comment_author{margin:20px 0;}
+/* 留言右侧 */
+.comment_list .comment_row .comment_right{width:719px;min-height:270px;float:left;border-left:1px solid #dcdcdc;}
+/* 留言操作 */
+.comment_list .comment_row .comment_right .comment_opt{padding:10px;border-bottom:1px solid #dcdcdc;text-align:right;}
+.comment_list .comment_row .comment_right .comment_opt span{float:left;margin-right:10px;}
+.comment_list .comment_row .comment_right .comment_opt a:hover{color:#ffd200;}
+/* 留言内容 */
+.comment_list .comment_row .comment_right .comment_content{padding:10px;}
+/* 留言回复 */
+.comment_list .comment_row .comment_right .reply_list{margin:10px 50px;background:#ccc;color:#000;overflow:hidden;}
+.comment_list .comment_row .comment_right .reply_list .reply_row{margin:10px;border:1px solid #000;}
+.comment_list .comment_row .comment_right .reply_list .reply_row .reply_content{padding:10px;overflow:hidden;}
+.comment_list .comment_row .comment_right .reply_list .reply_opt{text-align:right;padding:0 10px;}
+.comment_list .comment_row .comment_right .reply_list .reply_opt a{color:#000;}
+.comment_list .comment_row .comment_right .reply_list .reply_opt a:hover{color:green;}
+/* 回复回复弹窗 */
+.reply_window{background:#fff;overflow:hidden;display:none;margin:10px 50px;}
+.reply_window .reply_input{width:298px;height:28px;text-indent:6px;border:1px solid #ccc;background:transparent;display:block;color:#000;margin:20px 0;}
+.reply_window .reply_textarea{width:286px;height:126px;padding:6px;border:1px solid #ccc;background:transparent;display:block;margin:30px 50px;color:#000;margin:20px 0;}

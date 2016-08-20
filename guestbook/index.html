@@ -1,0 +1,157 @@
+<?php
+include 'base.php';
+$post = isset($_POST[''])
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>P0508-guestbook-首页</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="js/scripts.js"></script>
+</head>
+<body>
+<header class="header">
+	<div class="head-left">
+		<span class="logo"><h2>GuestBook</h2></span>
+	</div>
+	<div class="head-right">
+		<ul>
+			<li><a href="#">登录管理</a></li>
+			<li><a href="#">源码下载</a></li>
+			<li><a href="#">联系slade</a></li>
+			<li><a href="#">关于</a></li>
+		</ul>
+	</div>
+</header>
+<section class="container">
+	<div class="info-box box">
+		<form action="" method="post">
+			<div class="input-form">
+				<label for="name">昵称:</label>
+				<input type="text" name="name" placeholder="请输入昵称" />
+			</div>
+			<div class="input-form">
+				<label for="email">邮箱:</label>
+				<input type="text" name="email" placeholder="请输入邮箱" />
+			</div>
+			<div class="input-form">
+				<label for="name">选择头像:</label>
+				<ul class="face-list" id="face-list">
+					<li class="select"><a href="javascript:;"><img src="images/1.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/2.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/3.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/4.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/5.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/6.jpg" width="100" height="100" alt="face"></a></li>
+				</ul>
+			</div>
+			<div class="input-form" style="clear: both;float:none">
+				<label for="contents">内容:</label>
+				<textarea name="content" placeholder="输入内容" /></textarea> 
+			</div>
+			<button type="submit" name="sub" class="btn-submit">提  交</button>
+		</form>
+	</div>
+	<div class="content-list box">
+		<div class="content-title">
+			<h2>留言内容</h2>
+		</div>
+		<ul class="con-list">
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+			<li>
+				<div class="head"><img src="images/4.jpg" width="60" height="60" alt=""><span class="nickname">nickname</span></div>
+				<div class="cont">
+					<div class="con">内容内容内容内容</div><div class="tool"><span class="time">2016/05/26</span></div>
+				</div>
+			</li>
+		</ul>
+		<div class="page">
+			<ul>
+				<li>
+					<a href='/category/lzww/1' title='首页'>1</a>
+				</li>
+				<li>
+					<a href='/category/lzww/1' title='回到首页'>&lt;&lt;</a>
+				</li>
+				<li>
+					<a href='/category/lzww/1' title='首页'>首页</a>
+				</li>
+				<li class='active'>
+					<a href='#'>1</span>
+				</li>
+				<li>
+					<a href='/category/lzww/2'>2</a>
+				</li>
+				<li>
+					<a href='/category/lzww/3'>3</a>
+				</li>
+				<li>
+					<a href='/category/lzww/4'>4</a>
+				</li>
+				<li>
+					<a href='/category/lzww/2' title='后一页'>下一页</a>
+				</li>
+				<li>
+					<a href='/category/lzww/5' title='后4页'>&gt;&gt;</a>
+				</li>
+				<li>
+					<a href='/category/lzww/9' title='最后一页'>9</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</section>
+<div id="shade" class="shade"></div>
+<div id="model" class="model">
+	<div class="model-title" id="title">
+		<h3>模态标题</h3>
+		<span class="close" id="close">X</span>
+	</div>
+	<div class="model-content" id="content">
+		model内容
+	</div>
+</div>
+</body>
+</html>
