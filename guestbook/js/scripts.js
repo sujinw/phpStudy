@@ -16,16 +16,27 @@ window.onload = function(){
 	
 	var register= document.getElementById("register");
 	var registerClose = document.getElementById("closeResigster");
+	
+	var replay = document.getElementById('replay');
+	var closereplay = document.getElementById("closereplay");
 
-
+	var delReply = document.getElementById("delReply");
 
 	model.style.left = Math.ceil((winW - mWidth) / 2) + "px";
 	model.style.top  = Math.ceil((winH - mHeight) / 2) + "px";
+	
+	delReply.style.left = Math.ceil((winW - mWidth) / 2) + "px";
+	delReply.style.top  = Math.ceil((winH - delReply.offsetHeight) / 2) + "px";
+
+	replay.style.left = Math.ceil((winW - mWidth) / 2) + "px";
+	replay.style.top  = "0px";
+
 	login.style.left = Math.ceil((winW - mWidth) / 2) + "px";
 	login.style.top  = Math.ceil((winH - login.offsetHeight - 	100) / 2) + "px";
 	
 	register.style.left = Math.ceil((winW - mWidth) / 2) + "px";
 	register.style.top  = Math.ceil((winH - login.offsetHeight - 	100) / 2) + "px";
+	
 
 
 	close.onclick = function(){
@@ -52,6 +63,15 @@ window.onload = function(){
 			shade.style.display = "block";
 		}else{
 			register.style.display = "none";
+			shade.style.display = "none";
+		}
+	}
+	closereplay.onclick = function(){
+		if(shade.style.display === "none"){
+			replay.style.display = "block";
+			shade.style.display = "block";
+		}else{
+			replay.style.display = "none";
 			shade.style.display = "none";
 		}
 	}

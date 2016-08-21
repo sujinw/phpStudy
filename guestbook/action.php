@@ -11,7 +11,11 @@ if($act == "login"){
 }else if($act == "regigster"){
 	$msg = regigster();
 }else if($act == "commit"){
-	$msg=commit();
+	$msg = commit();
+}else if($act == "reply"){
+	$msg = reply();
+}else if($act=='delReply'){
+	$msg = delReply();
 }
 
 
@@ -112,6 +116,33 @@ function commit(){
 	@mysql_free_result( $result );
 	mysql_close();
 	return $msg;
+}
+
+//回复留言
+function reply(){
+	$uid = post('uid');
+	$gid = post('gid');
+	$content = post('contents');
+	$user_img = post('user_img');
+	
+	$sql = "INSERT INTO reply (`gid`,`uid`,`user_img`,`content`,`create_time`,`is_display`,`is_delete`,`reply_ip`) VALUES ('{$gid}','{$uid}','{$user_img}','{$content}','".time()."',1,0,'".getIP()."')";
+	
+	echo $sql;
+	//die;
+	$result = mysql_query( $sql );
+	if($result){
+		$msg = array("回复成功");
+	}else{
+		$msg = array("回复失败");
+	}
+	@mysql_free_result( $result );
+	mysql_close();
+	return $msg;
+}
+
+//删除留言
+function delReply(){
+	
 }
 ?>
 

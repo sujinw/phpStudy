@@ -25,25 +25,25 @@ print_r($res);
 
 //获取回复内容
 $sql = "SELECT u.uid,u.username,r.user_img,r.rid,r.gid,r.content,r.create_time,r.reply_ip FROM reply as r,user as u WHERE r.uid=u.uid AND r.is_display=1 AND r.is_delete=0 order by r.create_time desc";
-echo $sql;
+//echo $sql;
 $replyResult = mysql_query( $sql );
 $reply=array();
 while($r = mysql_fetch_array( $replyResult , MYSQL_ASSOC )){
 	$reply[] = $r;
 }
-print_r($reply);
+//print_r($reply);
 
 //处理回复和留言的数据
 $data = array();
 foreach($res as $key=>$value){
 	foreach($reply as $k=>$v){
-		if($value['gid'] == $v['rid']){
+		if($value['gid'] == $v['gid']){
 			$value['replay'][] = $v;
 		}
 	}
 	$data[]=$value;
 }
-print_r($data);
+//print_r($data);
 $sql = "SELECT count(*) FROM content";
 $result = mysql_query( $sql );
 if(mysql_num_rows( $result)){
@@ -58,6 +58,9 @@ if(mysql_num_rows( $result)){
     $count=0;
 }
 ?>
+<script>
+	
+</script>
 <section class="container">
 	<div class="content-list box">
 		<div class="content-title">
@@ -83,8 +86,8 @@ if(mysql_num_rows( $result)){
 								<div class="con"><?php echo $v['content']?></div>
 								<div class="tool">
 									<span class="time"><?php echo date('Y/m/d',$v['creat_time']);?></span>
-									<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="action.php?act=del&gid=<?php echo $v['gid']?>">删除</a></span><?php }?>
-									<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onlclick="replay(<?php echo $v['gid']?>)">回复</a></span><?php }?>
+									<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onclick="del(<?php echo $v['gid']?>)">删除</a></span><?php }?>
+									<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onclick="replay(<?php echo $v['gid']?>)">回复</a></span><?php }?>
 								</div>
 							</div>
 							<?php 
@@ -101,7 +104,7 @@ if(mysql_num_rows( $result)){
 									<div class="con"><?php echo $value['content']?></div>
 									<div class="tool">
 										<span class="time"><?php echo date('Y/m/d',$value['create_time']);?></span>
-										<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onlick="delReplay(<?php echo $v['gid']?>)">删除</a></span><?php }?>
+										<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onclick="delReplay(<?php echo $value['rid']?>)">删除</a></span><?php }?>
 									</div>
 								</div>
 							</div>
@@ -116,7 +119,8 @@ if(mysql_num_rows( $result)){
 			?>
 			
 		</ul>
-		<div class="page">
+		<?php if($count > $pageSize){ ?>
+		<div class="page" id="page">
 			<ul>
 				<li>
 					<a href='index.php?p=1' title='首页'>首页</a>
@@ -132,6 +136,7 @@ if(mysql_num_rows( $result)){
 				</li>
 			</ul>
 		</div>
+		<?php } ?>
 	</div>
 <div id="shade" class="shade"></div>
 <div id="model" class="model">
@@ -147,31 +152,41 @@ if(mysql_num_rows( $result)){
 <div id="del" class="model">
 	<div class="model-title">
 		<h3 id="title">删除操作</h3>
-		<span class="close" id="close">X</span>
+		<span class="close" id="closeDel">X</span>
 	</div>
-	<div class="model-content" id="content">
+	<div class="model-content" id="contentDel">
 		您确定要删除这条数据吗？？
 	</div>
 	<form action="action.php?act=delCommit&back=index.php" method="post">
 		<input type="hidden" value="" id="commitId"/>
-		<input type="submit" class="login-sub" value="登录" />
+		<input type="submit" class="login-sub" value="删 除" />
+	</form>
+</div>
+<!--删除回复 -->
+<div id="delReply" class="model">
+	<div class="model-title">
+		<h3 id="title">删除操作</h3>
+		<span class="close" id="closeDelReply">X</span>
+	</div>
+	<div class="model-content" id="contentDelRepl">
+		您确定要删除这条数据吗？？
+	</div>
+	<form action="action.php?act=delReply&back=index.php" method="post">
+		<input type="hidden" name="rid" value="" id="replyId"/>
+		<input type="submit" class="login-sub" value="删 除" />
 	</form>
 </div>
 <!-- 回复 -->
-<div id="replay" class="login model" style="display:block">
-	<form action="action.php?act=login&back=index.php" method="post">
+<div id="replay" class="login model" style="display:none">
 		<div class="model-title">
 		<h3 id="title">回复本条留言</h3>
-		<span class="close" id="closelogin">X</span>
+		<span class="close" id="closereplay">X</span>
 	</div>
 	<div class="model-content">
+		<form action="action.php?act=reply&back=index.php" method="post" id="replayForm">
 		<div class="login-inpt">
 			<label for="name">昵称:</label>
 				<input type="text" name="username" disabled id="name" placeholder="<?php echo $_SESSION['username'];?>" />
-		</div>
-		<div class="login-inpt">
-			<label for="email">邮箱:</label>
-			<input type="text" name="email" id="email" placeholder="请输入邮箱" />
 		</div>
 		<div class="input-form">
 			<label for="name">选择头像:</label>
@@ -189,7 +204,9 @@ if(mysql_num_rows( $result)){
 			<label for="contents">内容:</label>
 				<textarea name="contents" id="contents" style="width:360px" placeholder="输入内容"></textarea>
 		</div>
-		<input type="submit" id="login-sub" class="login-sub" value="回复" />
+		<input type="hidden" name="uid" id="uid" value="<?php echo $_SESSION['uid']?>" />
+		<input type="hidden" name="gid" value="" id="gid" />
+		<input type="button" id="login-sub" class="login-sub" value="回 复" />
 	</div>
 	</form>
 </div>
@@ -252,11 +269,13 @@ if(is_login == 0){
 	openlogin();
 }
 var num = GetQueryString('p');
-num = num ? num*1 : 0;
-document.getElementById('pre').href="index.php?p="+(num == 0 || num == 1? 1 : num-1);
-document.getElementById('next').href="index.php?p="+(num == 0 || num == 1? 1 : num+1);
-document.getElementById('total').href="index.php?p="+<?php echo $count/$pageSize < 1 ? 1 : $count/$pageSize; ?>;
-
+num = num ? num*1 : 1;
+console.log(num)
+if(document.getElementById('page')){
+	document.getElementById('pre').href="index.php?p="+( num == 1 ? 1 : num-1);
+	document.getElementById('next').href="index.php?p="+( num == 1 ? 1 : num+1);
+	document.getElementById('total').href="index.php?p=<?php echo $count/$pageSize < 1 ? 1 : $count/$pageSize; ?>";
+}
 var face	= document.getElementById("face-list");
 	var faceLi  = face.getElementsByTagName("li");
 
@@ -270,10 +289,25 @@ var face	= document.getElementById("face-list");
 		}
 	}
 function replay(id){
-	document.getElementById("replay").show();
-	document.getElementById("shade").show();
-	document.getElementById("commitId").value = id;	
-}	
+	
+	document.getElementById("replay").style.display = "block";
+	document.getElementById("shade").style.display = "block";
+	document.getElementById("gid").value=id;
+	
+	document.getElementById('login-sub').onclick = function(){
+		document.getElementById("replayForm").submit();
+	}
+
+}
+function delReplay(id){
+	document.getElementById('replyId').value = id;
+	
+	document.getElementById("delReply").style.display = "block";
+	document.getElementById("shade").style.display = "block";
+
+}
+
+
 </script>
 </body>
 </html>
