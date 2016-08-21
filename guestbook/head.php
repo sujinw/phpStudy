@@ -20,6 +20,7 @@ header("Content-type:text/html,charset=utf-8");
 	<script type="text/javascript" src="js/scripts.js"></script>
 	<script>
 	var is_login = <?php if(isset($_SESSION['username']) && !empty($_SESSION['username'])){echo 1;}else{echo 0;}?>;
+	console.log(is_login);
 
 	function GetQueryString(name){
 		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");

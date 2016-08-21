@@ -13,18 +13,42 @@ $message = false;
 $pageSize = 15;
 $p = isset($_GET['p']) ? $_GET['p'] : 1;
 $index = ($p-1)*$pageSize;
-$sql = " select u.uid,u.username,a.gid,a.email,a.user_img,a.content,a.creat_time,a.send_ip from content as a,user as u where a.uid=u.uid and a.is_display=1 and a.is_delete=0 limit {$index},{$pageSize}";
+//获取留言内容
+$sql = " select u.uid,u.username,a.gid,a.email,a.user_img,a.content,a.creat_time,a.send_ip from content as a,user as u where a.uid=u.uid and a.is_display=1 and a.is_delete=0 order by a.creat_time desc limit {$index},{$pageSize}";
 //echo $sql;
 $result = mysql_query( $sql );
 $res = array();
-while($row = mysql_fetch_array($result)){
+while($row = mysql_fetch_array( $result ,MYSQL_ASSOC  )){
 	$res[] = $row;
 }
+print_r($res);
+
+//获取回复内容
+$sql = "SELECT u.uid,u.username,r.user_img,r.rid,r.gid,r.content,r.create_time,r.reply_ip FROM reply as r,user as u WHERE r.uid=u.uid AND r.is_display=1 AND r.is_delete=0 order by r.create_time desc";
+echo $sql;
+$replyResult = mysql_query( $sql );
+$reply=array();
+while($r = mysql_fetch_array( $replyResult , MYSQL_ASSOC )){
+	$reply[] = $r;
+}
+print_r($reply);
+
+//处理回复和留言的数据
+$data = array();
+foreach($res as $key=>$value){
+	foreach($reply as $k=>$v){
+		if($value['gid'] == $v['rid']){
+			$value['replay'][] = $v;
+		}
+	}
+	$data[]=$value;
+}
+print_r($data);
 $sql = "SELECT count(*) FROM content";
 $result = mysql_query( $sql );
 if(mysql_num_rows( $result)){
      
-   $rs=mysql_fetch_array($result);
+   $rs=mysql_fetch_array($result );
     
    //统计结果
    $count=$rs[0];
@@ -47,7 +71,7 @@ if(mysql_num_rows( $result)){
 							没有留言~~~~
 						</li>';
 				}else{
-					foreach ($res as $k => $v) {
+					foreach ($data as $k => $v) {
 			?>
 
 						<li>
@@ -59,8 +83,32 @@ if(mysql_num_rows( $result)){
 								<div class="con"><?php echo $v['content']?></div>
 								<div class="tool">
 									<span class="time"><?php echo date('Y/m/d',$v['creat_time']);?></span>
+									<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="action.php?act=del&gid=<?php echo $v['gid']?>">删除</a></span><?php }?>
+									<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onlclick="replay(<?php echo $v['gid']?>)">回复</a></span><?php }?>
 								</div>
 							</div>
+							<?php 
+								if(isset($v['replay'])){
+									foreach($v['replay'] as $key=>$value){
+							
+							?>
+							<div class="replay">
+								<div class="head">
+									<img width="60" height="60" src="<?php echo $value['user_img']?>" />
+									<span class="nickname"><?php echo $value['username']?></span>
+								</div>
+								<div class="cont">
+									<div class="con"><?php echo $value['content']?></div>
+									<div class="tool">
+										<span class="time"><?php echo date('Y/m/d',$value['create_time']);?></span>
+										<?php if(isset($_SESSION['is_admin']) && !empty($_SESSION['is_admin'])) {?><span class="shenhe"><a href="javascript:;" onlick="delReplay(<?php echo $v['gid']?>)">删除</a></span><?php }?>
+									</div>
+								</div>
+							</div>
+							<?php 
+								}
+							}
+							?>
 						</li>
 			<?php
 					}
@@ -85,7 +133,6 @@ if(mysql_num_rows( $result)){
 			</ul>
 		</div>
 	</div>
-</section>
 <div id="shade" class="shade"></div>
 <div id="model" class="model">
 	<div class="model-title">
@@ -96,9 +143,59 @@ if(mysql_num_rows( $result)){
 		model内容
 	</div>
 </div>
+<!--删除留言 -->
+<div id="del" class="model">
+	<div class="model-title">
+		<h3 id="title">删除操作</h3>
+		<span class="close" id="close">X</span>
+	</div>
+	<div class="model-content" id="content">
+		您确定要删除这条数据吗？？
+	</div>
+	<form action="action.php?act=delCommit&back=index.php" method="post">
+		<input type="hidden" value="" id="commitId"/>
+		<input type="submit" class="login-sub" value="登录" />
+	</form>
+</div>
+<!-- 回复 -->
+<div id="replay" class="login model" style="display:block">
+	<form action="action.php?act=login&back=index.php" method="post">
+		<div class="model-title">
+		<h3 id="title">回复本条留言</h3>
+		<span class="close" id="closelogin">X</span>
+	</div>
+	<div class="model-content">
+		<div class="login-inpt">
+			<label for="name">昵称:</label>
+				<input type="text" name="username" disabled id="name" placeholder="<?php echo $_SESSION['username'];?>" />
+		</div>
+		<div class="login-inpt">
+			<label for="email">邮箱:</label>
+			<input type="text" name="email" id="email" placeholder="请输入邮箱" />
+		</div>
+		<div class="input-form">
+			<label for="name">选择头像:</label>
+				<ul class="face-list" id="face-list">
+					<li class="select"><a href="javascript:;"><img src="images/1.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/2.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/3.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/4.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/5.jpg" width="100" height="100" alt="face"></a></li>
+					<li><a href="javascript:;"><img src="images/6.jpg" width="100" height="100" alt="face"></a></li>
+				</ul>
+				<input type="hidden" id="user-img" name="user_img" value="images/1.jpg" />
+		</div>
+		<div class="input-form" style="clear: both;float:none">
+			<label for="contents">内容:</label>
+				<textarea name="contents" id="contents" style="width:360px" placeholder="输入内容"></textarea>
+		</div>
+		<input type="submit" id="login-sub" class="login-sub" value="回复" />
+	</div>
+	</form>
+</div>
 <!-- 登录 -->
 <div id="login" class="login model">
-	<form action="index.php?act=login" method="post">
+	<form action="action.php?act=login&back=index.php" method="post">
 		<div class="model-title">
 		<h3 id="title">管理登录</h3>
 		<span class="close" id="closelogin">X</span>
@@ -113,12 +210,13 @@ if(mysql_num_rows( $result)){
 			<input type="password" id="pass" name="password" />
 		</div>
 		<input type="submit" id="login-sub" class="login-sub" value="登录" />
+		<a href="javascript:;" onclick="showRegister()">还没有账号？马上进行注册>></a>
 	</div>
 	</form>
 </div>
 <!-- 注册 -->
 <div id="register" class="login model">
-	<form action="action.php?act=regigster&back=replay.php" method="post">
+	<form action="action.php?act=regigster&back=index.php" method="post">
 		<div class="model-title">
 		<h3 id="title">用户注册</h3>
 		<span class="close" id="closeResigster">X</span>
@@ -136,11 +234,13 @@ if(mysql_num_rows( $result)){
 			<label for="pass">确认密码</label>
 			<input type="password" id="passConfirm" name="password" />
 		</div>
-		<input type="submit" class="login-sub" value="登录" />
+		<input type="submit" class="login-sub" value="注 册" />
 		<a href="javascript:;" onclick="openlogin()">已经拥有账号？马上登录>></a>
 	</div>
 	</form>
 </div>
+</section>
+
 <script>
 //openlogin
 if(document.getElementById("pass").value != document.getElementById("passConfirm").value){
@@ -151,15 +251,29 @@ if(is_login == 0){
 	alert("请先登录或者注册，再给留言！");
 	openlogin();
 }
-window.onload = function(){
-	var num = GetQueryString('p');
-	num = num ? num : 0;
-	console.log(num)
-	document.getElementById('pre').href="index.php?p="+(num+1);
-	document.getElementById('next').href="index.php?p="+(num == 0 || num == 1? 1 : num-1);
-	document.getElementById('total').href="index.php?p="+<?php echo $count/$pageSize < 1 ? 1 : $count/$pageSize; ?>;
-}
+var num = GetQueryString('p');
+num = num ? num*1 : 0;
+document.getElementById('pre').href="index.php?p="+(num == 0 || num == 1? 1 : num-1);
+document.getElementById('next').href="index.php?p="+(num == 0 || num == 1? 1 : num+1);
+document.getElementById('total').href="index.php?p="+<?php echo $count/$pageSize < 1 ? 1 : $count/$pageSize; ?>;
 
+var face	= document.getElementById("face-list");
+	var faceLi  = face.getElementsByTagName("li");
+
+	for(var i=0; i<faceLi.length; i++){
+		faceLi[i].onclick = function(){
+			for(var j=0; j<faceLi.length; j++){
+				faceLi[j].className = "";
+			}
+			this.className += "select";
+			document.getElementById('user-img').value = this.firstChild.firstChild.src;
+		}
+	}
+function replay(id){
+	document.getElementById("replay").show();
+	document.getElementById("shade").show();
+	document.getElementById("commitId").value = id;	
+}	
 </script>
 </body>
 </html>

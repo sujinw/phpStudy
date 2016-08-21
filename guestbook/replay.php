@@ -99,7 +99,7 @@ function commit(){
 			<label for="pass">确认密码</label>
 			<input type="password" id="passConfirm" name="password" />
 		</div>
-		<input type="submit" class="login-sub" value="登录" />
+		<input type="submit" class="login-sub" value="注 册" />
 		<a href="javascript:;" onclick="openlogin()">已经拥有账号？马上登录>></a>
 	</div>
 	</form>
@@ -114,6 +114,17 @@ if(is_login == 0){
 	alert("请先登录或者注册，再给留言！");
 	openlogin();
 }
+	var face	= document.getElementById("face-list");
+	var faceLi  = face.getElementsByTagName("li");
 
+	for(var i=0; i<faceLi.length; i++){
+		faceLi[i].onclick = function(){
+			for(var j=0; j<faceLi.length; j++){
+				faceLi[j].className = "";
+			}
+			this.className += "select";
+			document.getElementById('user-img').value = this.firstChild.firstChild.src;
+		}
+	}
 
 </script>

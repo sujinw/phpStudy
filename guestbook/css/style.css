@@ -65,12 +65,8 @@ a:hover{color: #F39E09;}
 	margin-left:8px;
 }
 .select{
-	border: 1px solid #DDD;
-    box-shadow: 1px 1px 1px #DEDEDE;
-    border: 1px solid #DDD;
     box-shadow: 1px 1px 1px #DEDEDE;
     background: green;
-    padding: 4px;
 }
 .container textarea{
 	width:500px;
@@ -99,17 +95,19 @@ a:hover{color: #F39E09;}
 }
 .con-list li{
 	padding:5px;
-	height:90px;
+	/*height:90px;*/
 	border-bottom:1px solid #DEDEDE;
-	position:relative;
+	/*position:relative;*/
 }
 .con-list li .head{
 	height:80px;
 	width:80px;
 	overflow:hidden;
-	position:absolute;
+	/*position:absolute;
 	top:10px;
-	left:8px;
+	left:8px;*/
+	float:left;
+	text-align:center;
 }
 .con-list .head img{
 	border-radius:50%;
@@ -119,19 +117,28 @@ a:hover{color: #F39E09;}
 	font-weight:600;
 }
 .con-list .con{
-	position:absolute;
+	/*position:absolute;
 	top:18px;
-	left:98px;
+	left:98px;*/
+	height: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .con-list .tool{
-	position:absolute;
+	/*position:absolute;
 	right:10px;
-	bottom:8px;
+	bottom:8px;*/
+	text-align:right;
 }
 .con-list li:hover{
 	background: #F1F1F1;
 	text-shadow:2px 2px 4px #CCC;
 	box-shadow:2px 2px 3px #aaaaaa;
+}
+.replay{
+	margin: 10px 10px 10px 73px;
+    border: 1px solid #ddd;
+    padding: 5px;
 }
 .page{
 	margin-top:20px;

@@ -11,13 +11,13 @@ window.onload = function(){
 
 	var close   = document.getElementById("close");
 	var loginclose   = document.getElementById("closelogin");
+	
 	var shade   = document.getElementById("shade");
+	
 	var register= document.getElementById("register");
 	var registerClose = document.getElementById("closeResigster");
 
 
-	var face	= document.getElementById("face-list");
-	var faceLi  = face ? face.getElementsByTagName("li") : [];
 
 	model.style.left = Math.ceil((winW - mWidth) / 2) + "px";
 	model.style.top  = Math.ceil((winH - mHeight) / 2) + "px";
@@ -55,16 +55,6 @@ window.onload = function(){
 			shade.style.display = "none";
 		}
 	}
-
-	for(var i=0; i<faceLi.length; i++){
-		faceLi[i].onclick = function(){
-			for(var j=0; j<faceLi.length; j++){
-				faceLi[j].className = "";
-			}
-			this.className += "select";
-			document.getElementById('user-img').value = this.firstChild.firstChild.src;
-		}
-	}
 	
 }
 function openModel(contents){
@@ -80,11 +70,13 @@ function openModel(contents){
 }
 
 function openlogin(){
+
 	register.style.display="none";
 	login.style.display = "block";
 	shade.style.display = "block";
 }
 function showRegister(){
+	
 	login.style.display="none";
 	register.style.display = "block";
 	shade.style.display = "block";
